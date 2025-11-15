@@ -259,6 +259,73 @@ class APIService {
     });
     return response.data;
   }
+
+  // Branching and Threading
+  async branchConversation(
+    conversationId: string,
+    data: { title?: string; include_future_messages?: boolean }
+  ): Promise<Conversation> {
+    const response = await this.client.post<Conversation>(
+      `/branches/conversations/${conversationId}/branch`,
+      data
+    );
+    return response.data;
+  }
+
+  async branchFromMessage(
+    conversationId: string,
+    messageId: string,
+    data: { new_content?: string; model?: string; temperature?: number }
+  ): Promise<Conversation> {
+    const response = await this.client.post<Conversation>(
+      `/branches/conversations/${conversationId}/messages/${messageId}/branch`,
+      data
+    );
+    return response.data;
+  }
+
+  async getBranchTree(conversationId: string): Promise<any> {
+    const response = await this.client.get(`/branches/conversations/${conversationId}/tree`);
+    return response.data;
+  }
+
+  async listBranches(conversationId: string): Promise<any[]> {
+    const response = await this.client.get(
+      `/branches/conversations/${conversationId}/branches`
+    );
+    return response.data;
+  }
+
+  async regenerateMessage(
+    messageId: string,
+    data: {
+      model?: string;
+      temperature?: number;
+      max_tokens?: number;
+      keep_original?: boolean;
+    }
+  ): Promise<Conversation> {
+    const response = await this.client.post<Conversation>(
+      `/branches/messages/${messageId}/regenerate`,
+      data
+    );
+    return response.data;
+  }
+
+  async editMessage(
+    messageId: string,
+    data: {
+      content: string;
+      regenerate_response?: boolean;
+      create_branch?: boolean;
+    }
+  ): Promise<Conversation> {
+    const response = await this.client.post<Conversation>(
+      `/branches/messages/${messageId}/edit`,
+      data
+    );
+    return response.data;
+  }
 }
 
 export const apiService = new APIService();

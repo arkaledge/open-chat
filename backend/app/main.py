@@ -138,9 +138,12 @@ async def add_rate_limit_middleware():
 
 
 # Include routers
+from app.api.v1 import branches
+
 app.include_router(auth.router, prefix="/api/v1")
 app.include_router(chat.router, prefix="/api/v1")
 app.include_router(conversations.router, prefix="/api/v1")
+app.include_router(branches.router, prefix="/api/v1")
 
 
 # Health check endpoint
