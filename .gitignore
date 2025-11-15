@@ -77,8 +77,7 @@ tmp/
 temp/
 *.tmp
 
-# Model weights
-models/
+# Model weights (ML models, not code models)
 *.bin
 *.safetensors
 *.gguf
